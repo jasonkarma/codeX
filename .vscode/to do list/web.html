@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+    <style>
+    .todo-list {
+        margin-top: 20px;
+    }
+
+    .todo-item {
+        margin-bottom: 10px;
+    }
+
+    .todo-item label {
+        margin-right: 10px;
+    }
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+
+    <input type="text" id="todoInput" placeholder="Enter a to-do item" autofocus>
+    <button onclick="addTodo()">Add</button>
+
+    <div class="todo-list" id="todoList"></div>
+
+    <script>
+    const todoList = document.getElementById('todoList');
+    const todoInput = document.getElementById('todoInput');
+
+    // Add a new todo
+    function addTodo() {
+        const todoText = todoInput.value.trim();
+        if (todoText !== '') {
+        fetch('/api/todos', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: todoText })
+        })
+        .then((res) => res.json())
+        .then((todo) => {
+            const todoItem = document.createElement('div');
+            todoItem.classList.add('todo-item');
+            todoItem.innerHTML = `
+            <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+            <label>${todo.text}</label>
+            <button onclick="completeTodo(${todo._id})">Complete</button>
+            `;
+            todoList.appendChild(todoItem);
+            todoInput.value = '';
+            todoInput.focus();
+        })
+        .catch((err) => console.error(err));
+        }
+    }
+
+    // Get all todos
+    fetch('/api/todos')
+        .then((res) => res.json())
+        .then((todos) => {
+        todos.forEach((todo) => {
+            const todoItem = document.createElement('div');
+            todoItem.classList.add('todo-item');
+            todoItem.innerHTML = `
+            <input type="checkbox" ${todo.completed ? 'checked' : ''}>
+            <label>${todo.text}</label>
+            <button onclick="completeTodo(${todo._id})">Complete</button>
+            `;
+            todoList.appendChild(todoItem);
+        });
+        })
+        .catch((err) => console.error(err));
+
+    // Complete a todo
+    function completeTodo(id) {
+        fetch(`/api/todos/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ completed: true })
+        })
+        .then((res) => res.json())
+        .then((todo) => {
+        const todoItem = document.querySelector(`#todoList .todo-item:nth-child(${todoList.children.length})`);
+        todoItem.querySelector('input[type="checkbox"]').checked = true;
+        })
+        .catch((err) => console.error(err));
+
+    }
+    </script>
+</body>
+</html>

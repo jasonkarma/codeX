@@ -1,5 +1,6 @@
 #make a todo list including input
 
+
 todo_list = []
 while True:
     action = input("Type add, show, edit, complete, or exit: ").lower()

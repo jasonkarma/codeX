@@ -1,0 +1,3 @@
+Hello, CodeX! This is a new line. 
+Today we are moving on to File Handling.
+This is a new line appended to the file.

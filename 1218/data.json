@@ -1,0 +1,9 @@
+{
+    "name": "Karma",
+    "age": 22,
+    "skills": [
+        "python",
+        "Git",
+        "File Handling"
+    ]
+}

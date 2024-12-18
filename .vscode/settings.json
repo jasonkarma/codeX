@@ -3,6 +3,10 @@
     "editor.quickSuggestions": {
         "comments": "on",
         "strings": "on"
-    }
+    },
+    "cSpell.words": [
+        "dropna",
+        "fillna"
+    ]
 }
 

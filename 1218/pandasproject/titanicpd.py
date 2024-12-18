@@ -12,7 +12,7 @@ print("Missing values handled successfully.")
 gender_counts = df['Sex'].value_counts()
 print(gender_counts)
 
-#claculate survival rate by gender and passenger class
+#calculate survival rate by gender and passenger class
 gender_class_counts = df.groupby(['Sex', 'Pclass'])['Survived'].value_counts()
 print(gender_class_counts)
 
@@ -26,4 +26,10 @@ plt.ylabel('Survival Rate')
 plt.title('Survival Rate by Gender and Passenger Class')
 plt.show()
 
+#calculate survival percentages
+survival_rate = df.groupby(["Sex", "Pclass"])["Survived"].mean() * 100
+print(survival_rate)
 
+df.groupby("Sex")["Survived"].mean().plot(kind="bar", title="Survival Rate by Gender")
+plt.ylabel("Survival Rate")
+plt.show()
